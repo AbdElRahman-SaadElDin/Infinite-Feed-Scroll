@@ -1,7 +1,9 @@
 import { http, HttpResponse } from "msw";
-import type { PaginatedItemsResponse, Item } from "../types/items";
+import type { PaginatedItemsResponse, User } from "../types/items";
 
-const TOTAL_ITEMS = 131;
+import { faker } from "@faker-js/faker";
+
+const TOTAL_ITEMS = 280;
 const ITEMS_PER_PAGE = 20;
 
 export const handlers = [
@@ -11,12 +13,13 @@ export const handlers = [
 		const delay = Math.random() * 700 + 300;
 
 		const start = (page - 1) * ITEMS_PER_PAGE;
-		const items: Item[] = Array.from(
+		const items: User[] = Array.from(
 			{ length: Math.min(ITEMS_PER_PAGE, TOTAL_ITEMS - start) },
 			(_, i) => ({
 				id: start + i + 1,
-				title: `Item ${start + i + 1}`,
-				description: `This is a mock item number ${start + i + 1}`,
+				name: faker.person.fullName(),
+				email: faker.internet.email(),
+				avatar: faker.image.avatar(),
 			})
 		);
 

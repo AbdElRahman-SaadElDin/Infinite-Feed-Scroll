@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchItems } from "../api/items";
-import { type Item, type PaginatedItemsResponse } from "../types/items";
+import { type PaginatedItemsResponse, type User } from "../types/items";
 import { useEffect } from "react";
 
 const Feed = () => {
@@ -39,7 +39,7 @@ const Feed = () => {
 
 	if (isError) {
 		return (
-			<div style={{ padding: "20px", color: "red" }}>
+			<div>
 				<p>Something went wrong!</p>
 				<button onClick={() => refetch()}>Retry</button>
 			</div>
@@ -50,15 +50,30 @@ const Feed = () => {
 		return <div>Loading feed...</div>;
 	}
 
-	const items: Item[] =
+	const items: User[] =
 		data?.pages.flatMap((page) => (page as PaginatedItemsResponse).data) || [];
 
 	return (
 		<div>
 			{items.map((item) => (
-				<div key={item.id}>
-					<h2>{item.title}</h2>
-					<p>{item.description}</p>
+				<div
+					key={item.id}
+					style={{
+						display: "flex",
+						alignItems: "center",
+						gap: "1rem",
+						marginBottom: "1rem",
+					}}
+				>
+					<img
+						src={item.avatar}
+						alt={item.name}
+						style={{ width: 48, height: 48, borderRadius: "50%" }}
+					/>
+					<div>
+						<h2>{item.name}</h2>
+						<p>{item.email}</p>
+					</div>
 				</div>
 			))}
 
