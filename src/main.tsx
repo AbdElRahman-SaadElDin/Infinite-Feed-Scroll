@@ -4,30 +4,33 @@ import "./index.css";
 import App from "./App.tsx";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient({
-	defaultOptions: {
-		queries: {
-			retry: 1,
-			staleTime: 5000,
-		},
-	},
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 5000,
+    },
+  },
 });
 
 async function main() {
-	if (import.meta.env.DEV) {
-		const { worker } = await import("./mocks/node");
-		await worker.start();
-	}
+  if (import.meta.env.DEV) {
+    const { worker } = await import("./mocks/node");
+    await worker.start();
+  }
 
-	const root = createRoot(document.getElementById("root")!);
-	root.render(
-		<StrictMode>
-			<QueryClientProvider client={queryClient}>
-				<App />
-			</QueryClientProvider>
-		</StrictMode>
-	);
+  const root = createRoot(document.getElementById("root")!);
+  root.render(
+    <StrictMode>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </BrowserRouter>
+    </StrictMode>
+  );
 }
 
 main();

@@ -1,5 +1,5 @@
 import { SearchIcon } from "lucide-react";
-import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 interface NavbarProps {
   searchQuery: string;
@@ -7,40 +7,44 @@ interface NavbarProps {
 }
 
 const Navbar = ({ searchQuery, setSearchQuery }: NavbarProps) => {
-  const [activeTab, setActiveTab] = useState<"users" | "products">("users");
+  const location = useLocation();
+  const isPostsPage = location.pathname === "/posts";
 
   return (
     <nav className="w-full bg-[#eee] border-b-2 border-[#abc8f4] sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
-          <div className="text-xl sm:text-2xl font-bold text-[#383838]">
+          <Link
+            to="/"
+            className="text-xl sm:text-2xl font-bold text-[#383838] hover:text-[#2e7df4] transition-colors"
+          >
             Infinite Feed
-          </div>
+          </Link>
 
           {/* Filters Container */}
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
             {/* Tabs */}
             <div className="flex gap-2 bg-[#ffe3e3] p-1 rounded-lg border border-[#ff807d]">
-              <button
-                onClick={() => setActiveTab("users")}
+              <Link
+                to="/"
                 className={`px-4 py-2 rounded-md font-medium transition-all duration-200 ${
-                  activeTab === "users"
+                  !isPostsPage
                     ? "bg-[#2e7df4] text-[#f9f9f9] shadow-md"
                     : "text-[#383838] hover:bg-[#ff807d] hover:text-[#f9f9f9]"
                 }`}
               >
                 Users
-              </button>
-              <button
-                onClick={() => setActiveTab("products")}
+              </Link>
+              <Link
+                to="/posts"
                 className={`px-4 py-2 rounded-md font-medium transition-all duration-200 ${
-                  activeTab === "products"
+                  isPostsPage
                     ? "bg-[#2e7df4] text-[#f9f9f9] shadow-md"
                     : "text-[#383838] hover:bg-[#ff807d] hover:text-[#f9f9f9]"
                 }`}
               >
-                Products
-              </button>
+                Posts
+              </Link>
             </div>
 
             {/* Search Bar */}
