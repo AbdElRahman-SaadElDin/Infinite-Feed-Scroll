@@ -1,5 +1,5 @@
 import { type User } from "../types/items";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactElement } from "react";
 
 interface UserCardProps {
 	user: User;
@@ -7,9 +7,9 @@ interface UserCardProps {
 	index?: number;
 }
 
-const UserCard = ({ user, isNew = false, index = 0 }: UserCardProps) => {
+const UserCard = ({ user, isNew = false, index = 0 }: UserCardProps): ReactElement => {
 	const cardRef = useRef<HTMLDivElement>(null);
-	const animationDelay = isNew ? index * 0.05 : 0;
+	const animationDelay: number = isNew ? index * 0.05 : 0;
 
 	useEffect(() => {
 		if (isNew && cardRef.current) {

@@ -1,13 +1,13 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import ScrollToTop from "./components/ScrollToTop";
 import Feed from "./Pages/Feed";
 import Posts from "./Pages/Posts";
 
-function App() {
-  const [searchQuery, setSearchQuery] = useState("");
+function App(): ReactElement {
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   return (
     <div className="min-h-screen bg-[#f9f9f9]">

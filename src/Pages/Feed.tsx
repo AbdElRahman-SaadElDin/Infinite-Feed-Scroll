@@ -1,14 +1,20 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchItems } from "../api/items";
 import { type PaginatedItemsResponse, type User } from "../types/items";
-import { useEffect, useCallback, useState, useMemo } from "react";
+import {
+  useEffect,
+  useCallback,
+  useState,
+  useMemo,
+  type ReactElement,
+} from "react";
 import UserCard from "../components/UserCard";
 
 interface FeedProps {
   searchQuery: string;
 }
 
-const Feed = ({ searchQuery }: FeedProps) => {
+const Feed = ({ searchQuery }: FeedProps): ReactElement => {
   const {
     data,
     fetchNextPage,
@@ -32,21 +38,21 @@ const Feed = ({ searchQuery }: FeedProps) => {
     data?.pages.flatMap((page) => (page as PaginatedItemsResponse).data) || [];
 
   // Filter items based on searchbar
-  const items = useMemo(() => {
+  const items: User[] = useMemo(() => {
     if (!searchQuery.trim()) {
       return allItems;
     }
-    const query = searchQuery.toLowerCase().trim();
+    const query: string = searchQuery.toLowerCase().trim();
     return allItems.filter(
-      (item) =>
+      (item: User) =>
         item.name.toLowerCase().includes(query) ||
         item.email.toLowerCase().includes(query)
     );
   }, [allItems, searchQuery]);
 
   // Track the number of items from previous render to detect new items
-  const [previousItemCount, setPreviousItemCount] = useState(0);
-  const [newItemStartIndex, setNewItemStartIndex] = useState(0);
+  const [previousItemCount, setPreviousItemCount] = useState<number>(0);
+  const [newItemStartIndex, setNewItemStartIndex] = useState<number>(0);
 
   useEffect(() => {
     if (items.length > previousItemCount) {
@@ -55,7 +61,7 @@ const Feed = ({ searchQuery }: FeedProps) => {
     setPreviousItemCount(items.length);
   }, [items.length, previousItemCount]);
 
-  const handleScroll = useCallback(() => {
+  const handleScroll = useCallback((): void => {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
       hasNextPage &&

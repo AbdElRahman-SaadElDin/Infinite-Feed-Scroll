@@ -1,14 +1,15 @@
 import { SearchIcon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+import { type ReactElement } from "react";
 
 interface NavbarProps {
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Navbar = ({ searchQuery, setSearchQuery }: NavbarProps) => {
+const Navbar = ({ searchQuery, setSearchQuery }: NavbarProps): ReactElement => {
   const location = useLocation();
-  const isPostsPage = location.pathname === "/posts";
+  const isPostsPage: boolean = location.pathname === "/posts";
 
   return (
     <nav className="w-full bg-[#eee] border-b-2 border-[#abc8f4] sticky top-0 z-50 shadow-sm">

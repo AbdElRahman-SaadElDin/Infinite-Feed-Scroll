@@ -1,5 +1,5 @@
 import { type Post } from "../types/items";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactElement } from "react";
 
 interface PostCardProps {
   post: Post;
@@ -7,9 +7,13 @@ interface PostCardProps {
   index?: number;
 }
 
-const PostCard = ({ post, isNew = false, index = 0 }: PostCardProps) => {
+const PostCard = ({
+  post,
+  isNew = false,
+  index = 0,
+}: PostCardProps): ReactElement => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const animationDelay = isNew ? index * 0.05 : 0;
+  const animationDelay: number = isNew ? index * 0.05 : 0;
 
   useEffect(() => {
     if (isNew && cardRef.current) {

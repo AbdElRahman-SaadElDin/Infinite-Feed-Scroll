@@ -1,14 +1,20 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchPosts } from "../api/post";
 import { type PaginatedPostsResponse, type Post } from "../types/items";
-import { useEffect, useCallback, useState, useMemo } from "react";
+import {
+  useEffect,
+  useCallback,
+  useState,
+  useMemo,
+  type ReactElement,
+} from "react";
 import PostCard from "../components/PostCard";
 
 interface PostsProps {
   searchQuery: string;
 }
 
-const Posts = ({ searchQuery }: PostsProps) => {
+const Posts = ({ searchQuery }: PostsProps): ReactElement => {
   const {
     data,
     fetchNextPage,
@@ -32,13 +38,13 @@ const Posts = ({ searchQuery }: PostsProps) => {
     data?.pages.flatMap((page) => (page as PaginatedPostsResponse).data) || [];
 
   // Filter posts based on searchbar
-  const posts = useMemo(() => {
+  const posts: Post[] = useMemo(() => {
     if (!searchQuery.trim()) {
       return allPosts;
     }
-    const query = searchQuery.toLowerCase().trim();
+    const query: string = searchQuery.toLowerCase().trim();
     return allPosts.filter(
-      (post) =>
+      (post: Post) =>
         post.title.toLowerCase().includes(query) ||
         post.description.toLowerCase().includes(query) ||
         post.userName.toLowerCase().includes(query)
@@ -46,8 +52,8 @@ const Posts = ({ searchQuery }: PostsProps) => {
   }, [allPosts, searchQuery]);
 
   // Track the number of items from previous render to detect new items
-  const [previousItemCount, setPreviousItemCount] = useState(0);
-  const [newItemStartIndex, setNewItemStartIndex] = useState(0);
+  const [previousItemCount, setPreviousItemCount] = useState<number>(0);
+  const [newItemStartIndex, setNewItemStartIndex] = useState<number>(0);
 
   useEffect(() => {
     if (posts.length > previousItemCount) {
@@ -56,7 +62,7 @@ const Posts = ({ searchQuery }: PostsProps) => {
     setPreviousItemCount(posts.length);
   }, [posts.length, previousItemCount]);
 
-  const handleScroll = useCallback(() => {
+  const handleScroll = useCallback((): void => {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 500 &&
       hasNextPage &&
