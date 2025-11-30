@@ -1,12 +1,16 @@
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
 
-const Navbar = () => {
+interface NavbarProps {
+  searchQuery: string;
+  setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
+}
+
+const Navbar = ({ searchQuery, setSearchQuery }: NavbarProps) => {
   const [activeTab, setActiveTab] = useState<"users" | "products">("users");
-  const [searchQuery, setSearchQuery] = useState("");
 
   return (
-    <nav className="w-full bg-[#f9f9f9] border-b-2 border-[#abc8f4] sticky top-0 z-50 shadow-sm">
+    <nav className="w-full bg-[#eee] border-b-2 border-[#abc8f4] sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
           <div className="text-xl sm:text-2xl font-bold text-[#383838]">

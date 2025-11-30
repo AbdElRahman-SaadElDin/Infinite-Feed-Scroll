@@ -1,10 +1,14 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchItems } from "../api/items";
 import { type PaginatedItemsResponse, type User } from "../types/items";
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useCallback, useState, useMemo } from "react";
 import UserCard from "./UserCard";
 
-const Feed = () => {
+interface FeedProps {
+  searchQuery: string;
+}
+
+const Feed = ({ searchQuery }: FeedProps) => {
   const {
     data,
     fetchNextPage,
@@ -71,8 +75,21 @@ const Feed = () => {
     );
   }
 
-  const items: User[] =
+  const allItems: User[] =
     data?.pages.flatMap((page) => (page as PaginatedItemsResponse).data) || [];
+
+  // Filter items based on searchbar
+  const items = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return allItems;
+    }
+    const query = searchQuery.toLowerCase().trim();
+    return allItems.filter(
+      (item) =>
+        item.name.toLowerCase().includes(query) ||
+        item.email.toLowerCase().includes(query)
+    );
+  }, [allItems, searchQuery]);
 
   // Track the number of items from previous render to detect new items
   const [previousItemCount, setPreviousItemCount] = useState(0);
@@ -88,16 +105,27 @@ const Feed = () => {
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 bg-[#f9f9f9] min-h-screen">
       <div className="w-full mx-auto">
-        <div className="grid grid-auto-fit gap-4 sm:gap-6">
-          {items.map((item, index) => (
-            <UserCard
-              key={item.id}
-              user={item}
-              isNew={index >= newItemStartIndex}
-              index={index - newItemStartIndex}
-            />
-          ))}
-        </div>
+        {items.length === 0 && searchQuery.trim() ? (
+          <div className="flex flex-col items-center justify-center py-16">
+            <p className="text-lg font-medium text-[#383838] mb-2">
+              No users found matching "{searchQuery}"
+            </p>
+            <p className="text-sm text-[#383838] opacity-70">
+              Try searching by name or email
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-auto-fit gap-4 sm:gap-6">
+            {items.map((item, index) => (
+              <UserCard
+                key={item.id}
+                user={item}
+                isNew={index >= newItemStartIndex}
+                index={index - newItemStartIndex}
+              />
+            ))}
+          </div>
+        )}
 
         {isFetchingNextPage && (
           <div className="flex justify-center items-center py-8">
