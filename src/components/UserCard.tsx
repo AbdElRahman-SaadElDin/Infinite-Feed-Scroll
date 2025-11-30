@@ -1,12 +1,29 @@
 import { type User } from "../types/items";
+import { useEffect, useRef } from "react";
 
 interface UserCardProps {
   user: User;
+  isNew?: boolean;
+  index?: number;
 }
 
-const UserCard = ({ user }: UserCardProps) => {
+const UserCard = ({ user, isNew = false, index = 0 }: UserCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const animationDelay = isNew ? index * 0.05 : 0;
+
+  useEffect(() => {
+    if (isNew && cardRef.current) {
+      cardRef.current.style.setProperty("--delay", `${animationDelay}`);
+    }
+  }, [isNew, animationDelay]);
+
   return (
-    <div className="rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-4 sm:p-5 border-2 bg-[#f9f9f9] border-[#abc8f4] hover:border-[#2e7df4] hover:-translate-y-1">
+    <div
+      ref={cardRef}
+      className={`${
+        isNew ? "card-enter" : ""
+      } rounded-xl shadow-md hover:shadow-xl transition-all duration-300 p-4 sm:p-5 border-2 bg-[#f9f9f9] border-[#abc8f4] hover:border-[#2e7df4] hover:-translate-y-1`}
+    >
       <div className="flex flex-col items-center gap-3 sm:gap-4">
         <div className="flex-shrink-0">
           <img

@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { fetchItems } from "../api/items";
 import { type PaginatedItemsResponse, type User } from "../types/items";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import UserCard from "./UserCard";
 
 const Feed = () => {
@@ -74,12 +74,28 @@ const Feed = () => {
   const items: User[] =
     data?.pages.flatMap((page) => (page as PaginatedItemsResponse).data) || [];
 
+  // Track the number of items from previous render to detect new items
+  const [previousItemCount, setPreviousItemCount] = useState(0);
+  const [newItemStartIndex, setNewItemStartIndex] = useState(0);
+
+  useEffect(() => {
+    if (items.length > previousItemCount) {
+      setNewItemStartIndex(previousItemCount);
+    }
+    setPreviousItemCount(items.length);
+  }, [items.length, previousItemCount]);
+
   return (
     <div className="w-full px-4 sm:px-6 lg:px-8 py-6 sm:py-8 bg-[#f9f9f9] min-h-screen">
       <div className="w-full mx-auto">
         <div className="grid grid-auto-fit gap-4 sm:gap-6">
-          {items.map((item) => (
-            <UserCard key={item.id} user={item} />
+          {items.map((item, index) => (
+            <UserCard
+              key={item.id}
+              user={item}
+              isNew={index >= newItemStartIndex}
+              index={index - newItemStartIndex}
+            />
           ))}
         </div>
 
