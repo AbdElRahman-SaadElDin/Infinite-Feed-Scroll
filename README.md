@@ -2,9 +2,16 @@
 
 **10 hours**
 
-# Infinite-Feed-Scroll
 
+# Infinite-Feed-Scroll
 Responsive infinite scroll feed built with React, TypeScript, React Query, MSW and Tailwind. Includes mocked pagination, network latency simulation, loading indicators, retry on error, and smooth responsive UX.
+
+## Deployment
+
+- Live demo: [https://infinite-scroll-nine-beta.vercel.app/](https://infinite-scroll-nine-beta.vercel.app/)
+- **Note:** The app uses MSW (Mock Service Worker) for local API mocking. MSW works perfectly in local development, but causes errors on Vercel deployment because service workers are not supported in the same way in production. For best results, run locally with `npm run dev`.
+
+
 
 ## Technologies Used
 

@@ -34,7 +34,7 @@ const PostCard = ({
           <img
             src={post.userAvatar}
             alt={post.userName}
-            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-[3px] border-[#abc8f4] flex-shrink-0"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-[3px] border-[#abc8f4] shrink-0"
           />
           <div className="flex-1 min-w-0">
             <h3 className="text-sm sm:text-base font-semibold text-[#383838] truncate">
